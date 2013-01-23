@@ -1,5 +1,5 @@
 noflo = require 'noflo'
-{toMarkdown} = require 'to-markdown'
+md = require 'html-md'
 
 class ToMarkdown extends noflo.Component
   constructor: ->
@@ -9,7 +9,7 @@ class ToMarkdown extends noflo.Component
       out: new noflo.Port
 
     @inPorts.in.on 'data', (data) =>
-      @outPorts.out.send toMarkdown data
+      @outPorts.out.send md data
 
     @inPorts.in.on 'disconnect', =>
       @outPorts.out.disconnect()
