@@ -16,7 +16,8 @@
     "html-md": "2.0.x"
   },
   "devDependencies": {
-    "nodeunit": ">=0.6.0",
+    "noflo-test": "0.0.x",
+    "vows": "0.7.x",
     "coffeelint": "*",
     "coffee-script": "1.4.x"
   },
@@ -28,6 +29,6 @@
   },
   "scripts": {
     "pretest": "./node_modules/.bin/coffeelint -r components",
-    "test": "./node_modules/.bin/nodeunit test"
+    "test": "./node_modules/.bin/vows --spec test/*.coffee"
   }
 }

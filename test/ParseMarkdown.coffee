@@ -1,18 +1,8 @@
-parser = require "../components/ParseMarkdown"
-socket = require('noflo').internalSocket
+test = require 'noflo-test'
 
-setupComponent = ->
-  c = parser.getComponent()
-  ins = socket.createSocket()
-  out = socket.createSocket()
-  c.inPorts.in.attach ins
-  c.outPorts.out.attach out
-  [c, ins, out]
-
-exports['test converting simple Markdown'] = (test) ->
-  test.expect 1
-  [c, ins, out] = setupComponent()
-  out.once 'data', (data) ->
-    test.equal data, "<p>I am using <strong>markdown</strong>.</p>\n"
-    test.done()
-  ins.send "I am using __markdown__."
+test.component('markdown/ParseMarkdown').
+  discuss('When receiving a Markdown string').
+    send.data('in', 'I am using __markdown__.').
+    discuss('Generated HTML should be sent out').
+      receive.data('out', "<p>I am using <strong>markdown</strong>.</p>\n").
+export module
