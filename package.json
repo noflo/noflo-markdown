@@ -25,6 +25,7 @@
     "coffee-script": "1.4.x"
   },
   "noflo": {
+    "icon": "file-text",
     "components": {
       "ParseMarkdown": "./components/ParseMarkdown.coffee",
       "ToMarkdown": "./components/ToMarkdown.coffee"
