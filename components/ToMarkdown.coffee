@@ -1,23 +1,21 @@
 noflo = require 'noflo'
 md = require 'html-md'
 
-class ToMarkdown extends noflo.Component
-  constructor: ->
-    @inPorts = new noflo.InPorts
-      in:
-        datatype: 'string'
-        description: 'HTML source'
-    @outPorts = new noflo.OutPorts
-      out:
-        datatype: 'string'
+exports.getComponent = ->
+  c = new noflo.Component
+  c.description = 'Convert HTML to Markdown'
 
-    @inPorts.in.on 'begingroup', (group) =>
-      @outPorts.out.beginGroup group
-    @inPorts.in.on 'data', (data) =>
-      @outPorts.out.send md data
-    @inPorts.in.on 'endgroup',  =>
-      @outPorts.out.endGroup()
-    @inPorts.in.on 'disconnect', =>
-      @outPorts.out.disconnect()
+  c.inPorts.add 'in',
+    datatype: 'string'
+    description: 'HTML source'
+  c.outPorts.add 'out',
+    datatype: 'string'
 
-exports.getComponent = -> new ToMarkdown
+  noflo.helpers.WirePattern c,
+    in: ['in']
+    out: 'out'
+    forwardGroups: true
+  , (data, groups, out) ->
+    out.send md data
+
+  c
