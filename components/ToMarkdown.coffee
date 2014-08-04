@@ -1,5 +1,5 @@
 noflo = require 'noflo'
-upndown = require 'upndown'
+md = require 'html-md'
 
 exports.getComponent = ->
   c = new noflo.Component
@@ -16,7 +16,6 @@ exports.getComponent = ->
     out: 'out'
     forwardGroups: true
   , (data, groups, out) ->
-    und = new upndown
-    markdown = und.convert data
-    out.send markdown.replace '<', "\n<", 'g'
+    out.send md data
+
   c
