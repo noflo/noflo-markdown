@@ -16,6 +16,7 @@ exports.getComponent = ->
     out: 'out'
     forwardGroups: true
   , (data, groups, out) ->
-    out.send md data
+    out.send md data,
+      allowTags: true
 
   c
