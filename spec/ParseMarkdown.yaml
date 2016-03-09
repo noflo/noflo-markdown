@@ -1,0 +1,20 @@
+topic: "markdown/ParseMarkdown"
+name: "Markdown-to-HTML conversion"
+timeout: 10000
+fixture:
+ type: 'fbp'
+ data: |
+  # @runtime noflo-nodejs
+  INPORT=c.IN:IN
+  OUTPORT=r.OUT:OUT
+
+  c(markdown/ParseMarkdown) OUT -> IN r(core/Repeat)
+cases:
+-
+  name: 'When receiving a Markdown string'
+  assertion: 'Generated HTML should be sent out'
+  inputs:
+    in: 'I am using __markdown__.'
+  expect:
+    out:
+      contains: '<p>I am using <strong>markdown</strong>.</p>'
