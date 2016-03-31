@@ -4,7 +4,6 @@ marked = require 'marked'
 exports.getComponent = ->
   c = new noflo.Component
   c.description = 'Convert Markdown to HTML'
-  c.gfm = false
   c.inPorts.add 'in',
     datatype: 'string'
     description: 'Markdown source'
@@ -12,23 +11,24 @@ exports.getComponent = ->
     datatype: 'boolean'
     description: 'Use GitHub-flavored Markdown'
     default: false
-    process: (event, payload) ->
-      return unless event is 'data'
+    control: true
   c.outPorts.add 'out',
     datatype: 'string'
   c.outPorts.add 'error',
     datatype: 'object'
     required: false
 
-  noflo.helpers.WirePattern c,
-    in: ['in']
-    out: 'out'
-    forwardGroups: true
-  , (data, groups, out) ->
-    try
-      out.send marked data,
-        gfm: c.gfm
-    catch e
-      c.error e
+  c.process (input, output) ->
+    return unless input.has 'gfm', 'in'
+    [gfm, data] = input.get 'gfm', 'in'
+    return unless data.type is 'data'
 
-  c
+    try
+      html = marked data.data,
+        gfm: gfm.data
+    catch e
+      output.sendDone e
+      return
+
+    output.sendDone
+      out: html
