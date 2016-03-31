@@ -11,12 +11,13 @@ exports.getComponent = ->
   c.outPorts.add 'out',
     datatype: 'string'
 
-  noflo.helpers.WirePattern c,
-    in: ['in']
-    out: 'out'
-    forwardGroups: true
-  , (data, groups, out) ->
-    out.send md data,
+  c.process (input, output) ->
+    return unless input.has 'in'
+    data = input.get 'in'
+    return unless data.type is 'data'
+
+    markdown = md data,
       allowTags: true
 
-  c
+    output.sendOne
+      out: markdown
