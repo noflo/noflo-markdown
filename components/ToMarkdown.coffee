@@ -8,16 +8,21 @@ exports.getComponent = ->
   c.inPorts.add 'in',
     datatype: 'string'
     description: 'HTML source'
+  c.inPorts.add 'tags',
+    datatype: 'boolean'
+    description: 'Whether to allow HTML tags inside Markdown'
+    default: true
+    control: true
   c.outPorts.add 'out',
     datatype: 'string'
 
   c.process (input, output) ->
-    return unless input.has 'in'
-    data = input.get 'in'
+    return unless input.has 'tags', 'in'
+    [tags, data] = input.get 'tags', 'in'
     return unless data.type is 'data'
 
-    markdown = md data,
-      allowTags: true
+    markdown = md data.data,
+      allowTags: tags.data
 
-    output.sendOne
+    output.sendDone
       out: markdown
