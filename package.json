@@ -34,6 +34,9 @@
       "ToMarkdown": "components/ToMarkdown.coffee"
     }
   },
+  "keywords": [
+    "noflo"
+  ],
   "scripts": {
     "test": "grunt test"
   }
