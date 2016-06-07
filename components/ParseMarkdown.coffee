@@ -19,13 +19,15 @@ exports.getComponent = ->
     required: false
 
   c.process (input, output) ->
-    return unless input.has 'gfm', 'in'
-    [gfm, data] = input.get 'gfm', 'in'
+    return unless input.has 'in'
+    data = input.get 'in'
     return unless data.type is 'data'
+
+    gfm = if input.has('gfm') then input.getData('gfm') else false
 
     try
       html = marked data.data,
-        gfm: gfm.data
+        gfm: gfm
     catch e
       output.sendDone e
       return

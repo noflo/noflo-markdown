@@ -17,12 +17,14 @@ exports.getComponent = ->
     datatype: 'string'
 
   c.process (input, output) ->
-    return unless input.has 'tags', 'in'
-    [tags, data] = input.get 'tags', 'in'
+    return unless input.has 'in'
+    data = input.get 'in'
     return unless data.type is 'data'
 
+    tags = if input.has('tags') then input.getData('tags') else true
+
     markdown = md data.data,
-      allowTags: tags.data
+      allowTags: tags
 
     output.sendDone
       out: markdown
