@@ -34,3 +34,11 @@ cases:
   expect:
     out:
       equals: "Hello world\n===\n\n<iframe src=\"//player.vimeo.com/video/99873002?color=ffffff\" width=\"500\" height=\"281\" frameborder=\"0\" webkitallowfullscreen=\"\" mozallowfullscreen=\"\" allowfullscreen=\"\"></iframe>\n"
+-
+  name: 'When receiving HTML with article tags'
+  assertion: 'Generated Markdown should be sent out with article kept'
+  inputs:
+    in: "<article><h1>SpaceX concludes accident investigation, targets return to flight on Sunday</h1><p>Four months after a fueling accident led to the loss of a Falcon 9 rocket and its satellite payload, SpaceX said Monday morning that it has concluded an investigation into the incident and submitted its findings to the Federal Aviation Administration. The company also announced a target date of January 8th for a return to flight.</p><img src=\"https://cdn.arstechnica.net/wp-content/uploads/2016/07/27661326426_5e110ab4d8_k-640x215.jpg\" /></article>"
+  expect:
+    out:
+      equals: "<article>\n\nSpaceX concludes accident investigation, targets return to flight on Sunday\n===\n\nFour months after a fueling accident led to the loss of a Falcon 9 rocket and its satellite payload, SpaceX said Monday morning that it has concluded an investigation into the incident and submitted its findings to the Federal Aviation Administration. The company also announced a target date of January 8th for a return to flight.\n\n![](https://cdn.arstechnica.net/wp-content/uploads/2016/07/27661326426_5e110ab4d8_k-640x215.jpg)\n\n</article>\n"
