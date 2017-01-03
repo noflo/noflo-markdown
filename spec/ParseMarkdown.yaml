@@ -17,4 +17,12 @@ cases:
     in: 'I am using __markdown__.'
   expect:
     out:
-      contains: '<p>I am using <strong>markdown</strong>.</p>'
+      equals: "<p>I am using <strong>markdown</strong>.</p>\n"
+-
+  name: 'When receiving a Markdown string with HTML article tag'
+  assertion: 'Generated HTML should be sent out'
+  inputs:
+    in: "<article>\n\nSpaceX concludes accident investigation, targets return to flight on Sunday\n===\n\nFour months after a fueling accident led to the loss of a Falcon 9 rocket and its satellite payload, SpaceX said Monday morning that it has concluded an investigation into the incident and submitted its findings to the Federal Aviation Administration. The company also announced a target date of January 8th for a return to flight.\n\n![](https://cdn.arstechnica.net/wp-content/uploads/2016/07/27661326426_5e110ab4d8_k-640x215.jpg)\n\n</article>"
+  expect:
+    out:
+      equals: "<article>\n<h1>SpaceX concludes accident investigation, targets return to flight on Sunday</h1>\n<p>Four months after a fueling accident led to the loss of a Falcon 9 rocket and its satellite payload, SpaceX said Monday morning that it has concluded an investigation into the incident and submitted its findings to the Federal Aviation Administration. The company also announced a target date of January 8th for a return to flight.</p>\n<p><img src=\"https://cdn.arstechnica.net/wp-content/uploads/2016/07/27661326426_5e110ab4d8_k-640x215.jpg\" alt=\"\" /></p>\n</article>\n"

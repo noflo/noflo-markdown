@@ -1,5 +1,5 @@
 noflo = require 'noflo'
-md = require 'html-md'
+toMarkdown = require 'html2commonmark'
 
 exports.getComponent = ->
   c = new noflo.Component
@@ -23,8 +23,17 @@ exports.getComponent = ->
 
     tags = if input.has('tags') then input.getData('tags') else true
 
-    markdown = md data.data,
-      allowTags: tags
+    converterOptions =
+      rawHtmlElements: ['iframe', 'article', 'video', 'table']
+      interpretUnknownHtml: false
+
+    if noflo.isBrowser()
+      converter = new toMarkdown.BrowserConverter converterOptions
+    else
+      converter = new toMarkdown.JSDomConverter converterOptions
+    renderer = new toMarkdown.Renderer()
+    ast = converter.convert data.data
+    markdown = renderer.render ast
 
     output.sendDone
       out: markdown

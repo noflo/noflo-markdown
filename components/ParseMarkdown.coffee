@@ -1,5 +1,5 @@
 noflo = require 'noflo'
-marked = require 'marked'
+fromMarkdown = require 'commonmark'
 
 exports.getComponent = ->
   c = new noflo.Component
@@ -25,12 +25,8 @@ exports.getComponent = ->
 
     gfm = if input.has('gfm') then input.getData('gfm') else false
 
-    try
-      html = marked data.data,
-        gfm: gfm
-    catch e
-      output.sendDone e
-      return
-
+    reader = new fromMarkdown.Parser
+    renderer = new fromMarkdown.HtmlRenderer
+    ast = reader.parse data.data
     output.sendDone
-      out: html
+      out: renderer.render ast
