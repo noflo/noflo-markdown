@@ -1,5 +1,5 @@
 noflo = require 'noflo'
-marked = require 'marked'
+fromMarkdown = require 'commonmark'
 
 exports.getComponent = ->
   c = new noflo.Component
@@ -26,9 +26,9 @@ exports.getComponent = ->
     forwardGroups: true
   , (data, groups, out) ->
     try
-      out.send marked data,
-        gfm: c.gfm
+      reader = new fromMarkdown.Parser
+      renderer = new fromMarkdown.HtmlRenderer
+      ast = reader.parse data
+      out.send renderer.render ast
     catch e
-      c.error e
-
-  c
+      console.log e
