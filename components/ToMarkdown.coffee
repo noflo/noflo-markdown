@@ -1,5 +1,5 @@
 noflo = require 'noflo'
-md = require 'html-md'
+toMarkdown = require 'html2commonmark'
 
 exports.getComponent = ->
   c = new noflo.Component
@@ -16,7 +16,15 @@ exports.getComponent = ->
     out: 'out'
     forwardGroups: true
   , (data, groups, out) ->
-    out.send md data,
-      allowTags: true
+    converterOptions =
+      rawHtmlElements: ['iframe', 'article', 'video', 'table']
+      interpretUnknownHtml: false
 
-  c
+    if noflo.isBrowser()
+      converter = new toMarkdown.BrowserConverter converterOptions
+    else
+      converter = new toMarkdown.JSDomConverter converterOptions
+    renderer = new toMarkdown.Renderer()
+    ast = converter.convert data
+    markdown = renderer.render ast
+    out.send markdown
