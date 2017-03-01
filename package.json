@@ -25,7 +25,7 @@
     "grunt-noflo-manifest": "^0.1.12",
     "mocha": "^3.2.0",
     "noflo-core": "^0.3.0",
-    "noflo-nodejs": "0.x >= 0.7"
+    "noflo-nodejs": "0.8.1"
   },
   "noflo": {
     "icon": "file-text",
