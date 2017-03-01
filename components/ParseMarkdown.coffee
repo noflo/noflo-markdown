@@ -19,14 +19,13 @@ exports.getComponent = ->
     required: false
 
   c.process (input, output) ->
-    return unless input.has 'in'
-    data = input.get 'in'
-    return unless data.type is 'data'
+    return unless input.hasData 'in'
+    data = input.getData 'in'
 
     gfm = if input.has('gfm') then input.getData('gfm') else false
 
     reader = new fromMarkdown.Parser
     renderer = new fromMarkdown.HtmlRenderer
-    ast = reader.parse data.data
+    ast = reader.parse data
     output.sendDone
       out: renderer.render ast

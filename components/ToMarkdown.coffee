@@ -17,9 +17,8 @@ exports.getComponent = ->
     datatype: 'string'
 
   c.process (input, output) ->
-    return unless input.has 'in'
-    data = input.get 'in'
-    return unless data.type is 'data'
+    return unless input.hasData 'in'
+    data = input.getData 'in'
 
     tags = if input.has('tags') then input.getData('tags') else true
 
@@ -32,7 +31,7 @@ exports.getComponent = ->
     else
       converter = new toMarkdown.JSDomConverter converterOptions
     renderer = new toMarkdown.Renderer()
-    ast = converter.convert data.data
+    ast = converter.convert data
     markdown = renderer.render ast
 
     output.sendDone
