@@ -1,14 +1,4 @@
 topic: "markdown/ParseMarkdown"
-name: "Markdown-to-HTML conversion"
-timeout: 10000
-fixture:
- type: 'fbp'
- data: |
-  # @runtime noflo-nodejs
-  INPORT=c.IN:IN
-  OUTPORT=r.OUT:OUT
-
-  c(markdown/ParseMarkdown) OUT -> IN r(core/Repeat)
 cases:
 -
   name: 'When receiving a Markdown string'

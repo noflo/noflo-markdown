@@ -18,6 +18,7 @@ exports.getComponent = ->
 
   c.process (input, output) ->
     return unless input.hasData 'in'
+    return if input.attached('tags').length and not input.hasData 'tags'
     data = input.getData 'in'
 
     tags = if input.has('tags') then input.getData('tags') else true
