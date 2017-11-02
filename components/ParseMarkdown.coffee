@@ -20,6 +20,7 @@ exports.getComponent = ->
 
   c.process (input, output) ->
     return unless input.hasData 'in'
+    return if input.attached('gfm').length and not input.hasData 'gfm'
     data = input.getData 'in'
 
     gfm = if input.has('gfm') then input.getData('gfm') else false
