@@ -5,5 +5,5 @@ This module provides Markdown processing components for the [NoFlo](http://noflo
 
 ## Changes
 
-* 0.5.0 (2020-01-06)
+* 0.5.0 (2021-01-06)
   - Ported from CoffeeScript to JavaScript
