@@ -1,39 +1,55 @@
-const noflo = require('noflo');
-const toMarkdown = require('html2commonmark');
+import { Component } from "@noflo/noflo";
+import TurndownService from "turndown";
 
-exports.getComponent = () => {
-  const c = new noflo.Component();
-  c.description = 'Convert HTML to Markdown';
+// HTML elements kept as raw markup in the output, matching the 1.x
+// converter's rawHtmlElements setting
+const keptElements = ["iframe", "article", "video", "table"];
 
-  c.inPorts.add('in', {
-    datatype: 'string',
-    description: 'HTML source',
+/**
+ * Converts an HTML string to Markdown.
+ *
+ * Since 2.x this uses turndown, which is isomorphic and maintained; the
+ * 1.x implementation used html2commonmark with separate browser and
+ * jsdom converters. Conversion output differs from 1.x in formatting
+ * details (turndown's traversal).
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description: "Convert HTML to Markdown",
+    icon: "file-text-o",
+    inPorts: {
+      in: {
+        datatype: "string",
+        description: "HTML source",
+        required: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "string",
+        description: "Markdown output",
+      },
+      error: {
+        datatype: "object",
+      },
+    },
   });
-  c.outPorts.add('out', {
-    datatype: 'string',
-  });
 
-  return c.process((input, output) => {
-    if (!input.hasData('in')) { return; }
-    const data = input.getData('in');
-
-    const converterOptions = {
-      rawHtmlElements: ['iframe', 'article', 'video', 'table'],
-      interpretUnknownHtml: false,
-    };
-
-    let converter;
-    if (noflo.isBrowser()) {
-      converter = new toMarkdown.BrowserConverter(converterOptions);
-    } else {
-      converter = new toMarkdown.JSDomConverter(converterOptions);
+  c.process((input, output) => {
+    if (!input.hasData("in")) {
+      return;
     }
-    const renderer = new toMarkdown.Renderer();
-    const ast = converter.convert(data);
-    const markdown = renderer.render(ast);
-
-    output.sendDone({
-      out: markdown,
-    });
+    const data = input.getData("in");
+    try {
+      const converter = new TurndownService({ headingStyle: "setext" });
+      converter.keep(keptElements);
+      output.sendDone({ out: converter.turndown(data) });
+    } catch (error) {
+      output.error(error instanceof Error ? error : new Error(String(error)));
+      output.done();
+    }
   });
-};
+
+  return c;
+}
