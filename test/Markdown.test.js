@@ -50,12 +50,15 @@ describe("ParseMarkdown component", () => {
     try {
       const errored = new Promise((resolve, reject) => {
         const timer = setTimeout(() => reject(new Error("Timed out")), 2000);
-        errorSocket.addEventListener("ip", (/** @type {CustomEvent} */ event) => {
-          if (event.detail.type === "data") {
-            clearTimeout(timer);
-            resolve(event.detail.data);
-          }
-        });
+        errorSocket.addEventListener(
+          "ip",
+          (/** @type {CustomEvent} */ event) => {
+            if (event.detail.type === "data") {
+              clearTimeout(timer);
+              resolve(event.detail.data);
+            }
+          },
+        );
       });
       // An undefined payload becomes null and makes the parser throw
       const inSocket = noflo.internalSocket.createSocket();
@@ -73,7 +76,9 @@ describe("ToMarkdown component", () => {
   it("converts HTML to Markdown", async () => {
     const c = getToMarkdown();
     try {
-      const markdown = await run(c, { in: "<p>I am using <strong>markdown</strong>.</p>" });
+      const markdown = await run(c, {
+        in: "<p>I am using <strong>markdown</strong>.</p>",
+      });
       assert.equal(markdown, "I am using **markdown**.");
     } finally {
       await c.shutdown();
