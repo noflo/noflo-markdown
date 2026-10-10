@@ -1,0 +1,99 @@
+{
+  "format": "noflo-manifest",
+  "version": 1,
+  "id": "markdown",
+  "description": "Markdown conversion components for NoFlo",
+  "icon": null,
+  "npm": "@noflo/markdown",
+  "jsr": null,
+  "source": "https://github.com/noflo/noflo-markdown",
+  "revision": "2971bce767345a4f843deca858a9777cf4b922a8",
+  "loader": false,
+  "namespaces": {},
+  "components": [
+    {
+      "name": "markdown/ParseMarkdown",
+      "path": "components/ParseMarkdown.js",
+      "type": "elementary",
+      "description": "Convert Markdown to HTML",
+      "icon": "file-text-o",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "string",
+            "addressable": false,
+            "description": "Markdown source",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "string",
+            "addressable": false,
+            "description": "HTML output",
+            "required": false,
+            "control": false
+          },
+          {
+            "name": "error",
+            "datatype": "object",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": "spec/ParseMarkdown.yaml",
+      "assembly": false,
+      "platforms": [
+        "node"
+      ]
+    },
+    {
+      "name": "markdown/ToMarkdown",
+      "path": "components/ToMarkdown.js",
+      "type": "elementary",
+      "description": "Convert HTML to Markdown",
+      "icon": "file-text-o",
+      "signature": {
+        "inports": [
+          {
+            "name": "in",
+            "datatype": "string",
+            "addressable": false,
+            "description": "HTML source",
+            "required": true,
+            "control": false
+          }
+        ],
+        "outports": [
+          {
+            "name": "out",
+            "datatype": "string",
+            "addressable": false,
+            "description": "Markdown output",
+            "required": false,
+            "control": false
+          },
+          {
+            "name": "error",
+            "datatype": "object",
+            "addressable": false,
+            "description": "",
+            "required": false,
+            "control": false
+          }
+        ]
+      },
+      "spec": "spec/ToMarkdown.yaml",
+      "assembly": false,
+      "platforms": [
+        "node"
+      ]
+    }
+  ]
+}

@@ -1,28 +1,48 @@
-const noflo = require('noflo');
-const fromMarkdown = require('commonmark');
+import { Component } from "@noflo/noflo";
+import { HtmlRenderer, Parser } from "commonmark";
 
-exports.getComponent = () => {
-  const c = new noflo.Component();
-  c.description = 'Convert Markdown to HTML';
-  c.inPorts.add('in', {
-    datatype: 'string',
-    description: 'Markdown source',
-  });
-  c.outPorts.add('out', {
-    datatype: 'string',
-  });
-  c.outPorts.add('error', {
-    datatype: 'object',
-    required: false,
+/**
+ * Converts a Markdown string to HTML with the CommonMark reference
+ * parser.
+ * @returns {import("@noflo/noflo").Component} The configured component
+ */
+export function getComponent() {
+  const c = new Component({
+    description: "Convert Markdown to HTML",
+    icon: "file-text-o",
+    inPorts: {
+      in: {
+        datatype: "string",
+        description: "Markdown source",
+        required: true,
+      },
+    },
+    outPorts: {
+      out: {
+        datatype: "string",
+        description: "HTML output",
+      },
+      error: {
+        datatype: "object",
+      },
+    },
   });
 
-  return c.process((input, output) => {
-    if (!input.hasData('in')) { return; }
-    const data = input.getData('in');
-
-    const reader = new fromMarkdown.Parser();
-    const renderer = new fromMarkdown.HtmlRenderer();
-    const ast = reader.parse(data);
-    output.sendDone({ out: renderer.render(ast) });
+  c.process((input, output) => {
+    if (!input.hasData("in")) {
+      return;
+    }
+    const data = input.getData("in");
+    try {
+      const reader = new Parser();
+      const renderer = new HtmlRenderer();
+      const ast = reader.parse(data);
+      output.sendDone({ out: renderer.render(ast) });
+    } catch (error) {
+      output.error(error instanceof Error ? error : new Error(String(error)));
+      output.done();
+    }
   });
-};
+
+  return c;
+}
