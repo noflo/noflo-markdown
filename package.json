@@ -20,7 +20,9 @@
     "@biomejs/biome": "^2.0.0",
     "@noflo/fbp-spec-runner": "^2.0.0-alpha.3",
     "@noflo/loader-node": "^2.0.0-alpha.3",
+    "@types/commonmark": "^0.27.10",
     "@types/node": "^24.0.0",
+    "@types/turndown": "^5.0.6",
     "typescript": "^5.0.0"
   },
   "keywords": [

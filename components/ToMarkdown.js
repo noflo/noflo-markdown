@@ -3,6 +3,7 @@ import TurndownService from "turndown";
 
 // HTML elements kept as raw markup in the output, matching the 1.x
 // converter's rawHtmlElements setting
+/** @type {Array<keyof HTMLElementTagNameMap>} */
 const keptElements = ["iframe", "article", "video", "table"];
 
 /**
